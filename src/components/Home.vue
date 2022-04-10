@@ -1,25 +1,21 @@
 <template>
-  <div>Hello world!</div>
-  <!-- <SplashScreen /> -->
-  <!-- <Home /> -->
+  <Layout>
+    <template #header>
+       <Header></Header>
+    </template>
+  </Layout>
+ 
 </template>
 
 
 <script>
-// import SplashScreen from "@/components/SplashScreen.vue";
-// import { defineAsyncComponent } from "vue";
+import Layout from "./Layout.vue";
+import Header from "./Header.vue";
 
 export default {
   components: {
-    // SplashScreen,
-    //   Home: defineAsyncComponent(
-    //     () =>
-    //       new Promise((resolve) => {
-    //         setTimeout(() => {
-    //           resolve(require("./components/Home.vue"));
-    //         }, 2500);
-    //       })
-    //   ),
+    Layout,
+    Header,
   },
 };
 </script>

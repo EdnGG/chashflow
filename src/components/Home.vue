@@ -4,12 +4,20 @@
        <Header></Header>
     </template>
     <template #resume>
-      <Resume 
+      <Resume
         :total-label=" 'Total Savings' "
         :label="label"
         :amount="amount"
         :totalAmount="1000000"
-      />
+      >
+        <template #graphic>
+          graphic
+        </template>  
+        <template #action>
+          action
+        </template>   
+
+      </Resume>
     </template>
     <template #movements>
       <Movements/>

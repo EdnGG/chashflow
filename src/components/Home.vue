@@ -52,7 +52,7 @@ export default {
           id: 1,
           title: "Movement 1",
           description: "lorem ipsum",
-          amount: 100,
+          amount: -100,
         },
         {
           id: 2,

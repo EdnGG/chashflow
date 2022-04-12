@@ -1,5 +1,4 @@
 <template>
-  <!-- <SplashScreen /> -->
   <Suspense>
     <template #default><Home /></template>
     <template  #fallback><SplashScreen /></template>

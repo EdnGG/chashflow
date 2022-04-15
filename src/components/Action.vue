@@ -2,16 +2,50 @@
   <button @click="showModal = true">Add Movement</button>
   <teleport to="#app">
     <Modal v-show="showModal" @close="showModal = false">
-      Form
+      <form @submit.prevent="submit">
+        <div class="field">
+          <label>Title</label>
+          <input type="text" v-model="title" />
+        </div>
+        <div class="field">
+          <label>Amount</label>
+          <input type="number" v-model="amount" />
+        </div>
+        <div class="field">
+          <label>Description</label>
+          <textarea rows="4" type="text" v-model="description"></textarea>
+        </div>
+        <div class="field">
+          <label class="radio-label">
+            <input type="radio" v-model="movementType" value="Ingreso" />
+            <span>Ingreso</span>
+          </label>
+          <label class="radio-label">
+            <input type="radio" v-model="movementType" value="Gasto" />
+            <span>Gasto</span>
+          </label>
+        </div>
+        <div class="action">
+        <button>Add Movement </button>
+        </div>
+      </form>
     </Modal>
   </teleport>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, toRef } from "vue";
 import Modal from "./Modal.vue";
 
 const showModal = ref(false);
+const title = ref("");
+const description = ref("");
+const amount = ref(0);
+const movementType = ref("Ingreso");
+
+const submit = () => {
+  showModal.value = !showModal.value;
+};
 </script>
 
 <style scoped>

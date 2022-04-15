@@ -11,7 +11,7 @@
         :totalAmount="1000000"
       >
         <template #graphic>
-          graphic
+          <Graphic></Graphic>
         </template>  
         <template #action>
           <Action></Action>
@@ -36,6 +36,7 @@ import Header from "./Header.vue";
 import Resume from "./Resume/Index.vue";
 import Movements from "./Movements/Index.vue";
 import Action from "./Action.vue";
+import Graphic from "./Resume/Graphic.vue";
 
 export default {
   components: {
@@ -44,6 +45,7 @@ export default {
     Resume,
     Movements,
     Action,
+    Graphic,
   },
   data() {
     return {

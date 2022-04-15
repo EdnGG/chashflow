@@ -11,7 +11,7 @@
   <div class="movements">
 
     <div class="head" @click="showMovements = !showMovements">
-      <div class="grip">Grip</div>
+      <div class="grip"></div>
     </div>
 
     <div class="body" v-show="showMovements">

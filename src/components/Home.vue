@@ -11,10 +11,12 @@
         :totalAmount="1000000"
       >
         <template #graphic>
-          <Graphic></Graphic>
+          <Graphic 
+            :amounts="amounts"
+          />
         </template>  
         <template #action>
-          <Action></Action>
+          <Action />
         </template>   
 
       </Resume>
@@ -51,6 +53,7 @@ export default {
     return {
       amount: null,
       label: null,
+      amounts: [100, 200, 500, 200, -400, -600, -300, 0, 300, 500],
       movements: [
         {
           id: 1,

@@ -1,6 +1,9 @@
 <template>
   <div>
     <svg
+      @touchstart="tap"
+      @touchmove="tap"
+      @touchend="untap"
       viewBox="0 0 300 200"
     >
       <line 
@@ -18,11 +21,12 @@
         :points="points"
       />
       <line 
+        v-show="showPointer"
         stroke="#04b500"
         stroke-width="2"
-        x1="200"
+        :x1="pointer"
         y1="0"
-        x2="200"
+        :x2="pointer"
         y2="200"
       />  
     </svg>
@@ -32,7 +36,7 @@
 </template>
 
 <script setup>
-import { defineProps, toRefs, computed } from "vue";
+import { defineProps, toRefs, computed, ref } from "vue";
 
 const props = defineProps({
   amounts: {
@@ -73,6 +77,36 @@ const points = computed(() => {
     return `${points} ${x},${y}`;
   }, "0, 100");
 });
+
+const showPointer = ref(false);
+const pointer = ref(0);
+
+const tap = ({ target, touches }) => {
+  /**
+  Obtener el ancho del componente (grafica)
+  Obtener la coordenada en donde inicia
+*/
+
+  /*
+  Funcion de JS que nos permite obtener la posicion del elemento
+*/
+  showPointer.value = true;
+
+  const elementWidth = target.getBoundingClientRect().width;
+  const elementX = target.getBoundingClientRect().x;
+  const touchX = touches[0].clientX;
+  pointer.value = ((touchX - elementX) * 300) / elementWidth;
+  /*
+  elementWidth = Tamano real de elemento
+  touchX = distancia desde la orilla izquierda de la pantalla hasta el toque
+  elementX = distancia desde la orilla izquierda de la pantalla hasta el elemento
+*/
+};
+
+const untap = () => {
+  showPointer.value = false;
+  console.log("untap");
+};
 </script>
 
 

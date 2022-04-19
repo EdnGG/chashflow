@@ -95,7 +95,7 @@ const tap = ({ target, touches }) => {
   const elementX = target.getBoundingClientRect().x;
   const touchX = touches[0].clientX;
   pointer.value = ((touchX - elementX) * 300) / elementWidth;
-  // emit("select", pointer.value);
+  emits("select", pointer.value);
   /*
   elementWidth = Tamano real de elemento
   touchX = distancia desde la orilla izquierda de la pantalla hasta el toque

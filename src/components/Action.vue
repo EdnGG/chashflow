@@ -54,6 +54,10 @@ const submit = () => {
     time: new Date(),
     id: Math.random(),
   });
+  title.value = "";
+  description.value = "";
+  amount.value = 0;
+  movementType.value = "Ingreso";
 };
 </script>
 

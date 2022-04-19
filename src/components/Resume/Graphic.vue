@@ -7,9 +7,9 @@
         stroke="#c4c4c4"
         stroke-width="2"
         x1="0"
-        y1="100"
+        :y1="zero"
         x2="300"
-        y2="100"
+        :y2="zero"
       />
       <polyline 
         fill="none"
@@ -27,6 +27,7 @@
       />  
     </svg>
     <p>Last 30 days</p>
+    <div>{{ zero }}</div>
   </div>
 </template>
 
@@ -42,28 +43,35 @@ const props = defineProps({
 
 const { amounts } = toRefs(props);
 
-// const amountToPixels = (amount) => {
 const amountToPixels = (amount) => {
-  // El valor de amount aqui siempre es 100
   console.log("Amount: ", amount);
   // Esto funciona porque amounts es global
   const min = Math.min(...amounts.value);
   const max = Math.max(...amounts.value);
 
-  return `${min}, ${max}`;
+  const amountAbs = amount + Math.abs(min);
+  const minmax = Math.abs(max) + Math.abs(min);
+
+  /* 
+    calcula el numero de pixeles y lo convertimos a porcentaje
+    tomar el numero de pixeles y restarle el tamano en pixeles de la grafica
+  */
+  return 200 - ((amountAbs * 100) / minmax) * 2;
 };
+
+const zero = computed(() => {
+  return amountToPixels(0);
+});
 
 const points = computed(() => {
   const total = amounts.value.length;
 
-  return Array(total)
-    .fill(100)
-    .reduce((points, amount, index) => {
-      const x = (300 / total) * (index + 1);
-      const y = amountToPixels(amount);
-      console.log(y);
-      return `${points} ${x},${y}`;
-    }, "0, 100");
+  return amounts.value.reduce((points, amount, index) => {
+    const x = (300 / total) * (index + 1);
+    const y = amountToPixels(amount);
+    console.log(y);
+    return `${points} ${x},${y}`;
+  }, "0, 100");
 });
 </script>
 

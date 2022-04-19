@@ -91,7 +91,6 @@ const tap = ({ target, touches }) => {
   Funcion de JS que nos permite obtener la posicion del elemento
 */
   showPointer.value = true;
-
   const elementWidth = target.getBoundingClientRect().width;
   const elementX = target.getBoundingClientRect().x;
   const touchX = touches[0].clientX;

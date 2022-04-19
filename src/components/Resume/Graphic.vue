@@ -31,12 +31,12 @@
       />  
     </svg>
     <p>Last 30 days</p>
-    <div>{{ zero }}</div>
+    <div>{{ amounts }}</div>
   </div>
 </template>
 
 <script setup>
-import { defineProps, toRefs, computed, ref } from "vue";
+import { defineProps, toRefs, defineEmits, computed, ref } from "vue";
 
 const props = defineProps({
   amounts: {
@@ -48,7 +48,6 @@ const props = defineProps({
 const { amounts } = toRefs(props);
 
 const amountToPixels = (amount) => {
-  console.log("Amount: ", amount);
   // Esto funciona porque amounts es global
   const min = Math.min(...amounts.value);
   const max = Math.max(...amounts.value);
@@ -69,11 +68,10 @@ const zero = computed(() => {
 
 const points = computed(() => {
   const total = amounts.value.length;
-
   return amounts.value.reduce((points, amount, index) => {
     const x = (300 / total) * (index + 1);
     const y = amountToPixels(amount);
-    console.log(y);
+    // console.log(y);
     return `${points} ${x},${y}`;
   }, "0, 100");
 });
@@ -81,8 +79,10 @@ const points = computed(() => {
 const showPointer = ref(false);
 const pointer = ref(0);
 
+const emits = defineEmits(["select"]);
+
 const tap = ({ target, touches }) => {
-  /**
+  /*                Objetivo
   Obtener el ancho del componente (grafica)
   Obtener la coordenada en donde inicia
 */
@@ -96,6 +96,7 @@ const tap = ({ target, touches }) => {
   const elementX = target.getBoundingClientRect().x;
   const touchX = touches[0].clientX;
   pointer.value = ((touchX - elementX) * 300) / elementWidth;
+  // emit("select", pointer.value);
   /*
   elementWidth = Tamano real de elemento
   touchX = distancia desde la orilla izquierda de la pantalla hasta el toque
@@ -105,7 +106,6 @@ const tap = ({ target, touches }) => {
 
 const untap = () => {
   showPointer.value = false;
-  console.log("untap");
 };
 </script>
 

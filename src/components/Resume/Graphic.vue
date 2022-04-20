@@ -36,7 +36,7 @@
 </template>
 
 <script setup>
-import { defineProps, toRefs, defineEmits, computed, ref } from "vue";
+import { defineProps, toRefs, defineEmits, computed, ref, watch } from "vue";
 
 const props = defineProps({
   amounts: {
@@ -73,7 +73,7 @@ const points = computed(() => {
     const y = amountToPixels(amount);
     // console.log(y);
     return `${points} ${x},${y}`;
-  }, "0, 100");
+  }, `0, ${amountToPixels(amounts.value.length ? amounts.value[0] : 0)}`);
 });
 
 const showPointer = ref(false);
@@ -81,26 +81,36 @@ const pointer = ref(0);
 
 const emits = defineEmits(["select"]);
 
+watch(pointer, (value) => {
+  const index = Math.ceil(value / (300 / amounts.value.length));
+  if (index < 0 || index > amounts.value.length) {
+    return;
+  }
+  emits("select", amounts.value[index - 1]);
+});
+
 const tap = ({ target, touches }) => {
-  /*                Objetivo
-  Obtener el ancho del componente (grafica)
-  Obtener la coordenada en donde inicia
-*/
+  /*                
+    Objetivo
+    Obtener el ancho del componente (grafica)
+    Obtener la coordenada en donde inicia
+  */
 
   /*
-  Funcion de JS que nos permite obtener la posicion del elemento
-*/
+    Funcion de JS que nos permite obtener la posicion del elemento
+  */
   showPointer.value = true;
   const elementWidth = target.getBoundingClientRect().width;
   const elementX = target.getBoundingClientRect().x;
   const touchX = touches[0].clientX;
   pointer.value = ((touchX - elementX) * 300) / elementWidth;
-  emits("select", pointer.value);
+
+  // emits("select", pointer.value);
   /*
-  elementWidth = Tamano real de elemento
-  touchX = distancia desde la orilla izquierda de la pantalla hasta el toque
-  elementX = distancia desde la orilla izquierda de la pantalla hasta el elemento
-*/
+    elementWidth = Tamano real de elemento
+    touchX = distancia desde la orilla izquierda de la pantalla hasta el toque
+    elementX = distancia desde la orilla izquierda de la pantalla hasta el elemento
+  */
 };
 
 const untap = () => {

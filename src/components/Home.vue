@@ -11,7 +11,10 @@
         :amount="amount"
       >
         <template #graphic>
-          <Graphic :amounts="amounts" />
+          <Graphic 
+            :amounts="amounts"
+            @select="select"   
+          />
         </template>
         <template #action>
           <Action @create="create" />
@@ -58,6 +61,9 @@ export default {
     }
   },
   methods: {
+    select(el) {
+      this.amount = el;
+    },
     save() {
       localStorage.setItem("movements", JSON.stringify(this.movements));
     },
@@ -77,30 +83,30 @@ export default {
         return total + m.amount;
       }, 0);
     },
-  },
-  amounts() {
-    const lastDays = this.movements
-      .filter((m) => {
-        const today = new Date();
-        // const oldDate = today.setDate(today.getDate() - 30);
-        const oldDate = today.getDate() - 30;
-        console.log("today ", today);
-        console.log("oldDate: ", oldDate);
-        console.log("m.time ", m.time);
-        // Aqui deveria ser >= pero no funciona
-        // devolvemos todos los elementos ue sean menores a los ultimos 30 dias (<)
-        return m.time > oldDate;
-      })
-      .map((m) => m.amount);
+    amounts() {
+      const lastDays = this.movements
+        .filter((m) => {
+          const today = new Date();
+          // const oldDate = today.setDate(today.getDate() - 30);
+          const oldDate = today.getDate() - 30;
+          console.log("today ", today);
+          console.log("oldDate: ", oldDate);
+          console.log("m.time ", m.time);
+          // Aqui deveria ser >= pero no funciona
+          // devolvemos todos los elementos ue sean menores a los ultimos 30 dias (<)
+          return m.time > oldDate;
+        })
+        .map((m) => m.amount);
 
-    return lastDays.map((m, i) => {
-      const lastMovements = lastDays.slice(0, i);
+      return lastDays.map((m, i) => {
+        // Con la linea de abajo siempre va a dibujar el movimiento mas reciente
+        const lastMovements = lastDays.slice(0, i + 1);
 
-      return lastMovements.reduce((suma, movement) => {
-        return suma + movement;
-      }, 0);
-    });
+        return lastMovements.reduce((suma, movement) => {
+          return suma + movement;
+        }, 0);
+      });
+    },
   },
-  // },
 };
 </script>
